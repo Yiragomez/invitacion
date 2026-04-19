@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis 15 - Experiencia Real</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Playfair+Display:wght@500&family=Great+Vibes&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:'Montserrat',sans-serif;background:#2d0b3a;color:#f3e6ff}
+
+#intro{position:fixed;inset:0;display:flex;justify-content:center;align-items:center;flex-direction:column;background:#1a061f;z-index:10;text-align:center}
+#intro button{margin-top:15px;padding:12px 25px;border:none;border-radius:30px;background:#d9a6ff;color:#2d0b3a;cursor:pointer}
+
+.main{display:none;min-height:100vh;padding:20px;justify-content:center;align-items:center}
+
+.card{width:100%;max-width:420px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:20px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.5);position:relative;overflow:hidden;animation:fadeIn 1.5s ease}
+
+.card::before{content:"";position:absolute;inset:10px;border:1px solid rgba(255,255,255,0.15);border-radius:15px}
+
+.card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-repeat:no-repeat;
+  background-size:140px;
+  background-position:top left,bottom right;
+  background-image:
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23d9a6ff' opacity='0.3'><circle cx='20' cy='20' r='8'/></g></svg>"),
+  url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><g fill='%23d9a6ff' opacity='0.3'><circle cx='80' cy='80' r='8'/></g></svg>");
+  pointer-events:none;
+  z-index:1;
+}
+
+/* asegurar que el contenido esté encima */
+.card > *{
+  position:relative;
+  z-index:2;
+}
+
+img{width:100%;border-radius:15px;margin-bottom:15px}
+
+h1{font-family:'Cinzel',serif;color:#e0b3ff;text-shadow:0 0 8px rgba(217,166,255,0.6)}
+.signature{font-family:'Great Vibes',cursive;font-size:28px;color:#d9a6ff}
+
+button{margin-top:12px;padding:10px 18px;border:1px solid rgba(255,255,255,0.3);border-radius:20px;background:transparent;color:#d9a6ff;cursor:pointer;transition:.3s}
+button:hover{transform:scale(1.05);background:rgba(217,166,255,0.1)}
+
+.hidden{display:none}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.petal{position:fixed;top:-10px;width:6px;height:6px;background:#d9a6ff;border-radius:50%;opacity:0.5;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(100vh) rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <h1>✨ Estás invitado ✨</h1>
+  <button onclick="abrir()">Abrir invitación</button>
+</div>
+
+<div class="main" id="main">
+  <div class="card">
+
+    <img src="foto.jpg.jpeg" alt="Quinceañera">
+
+    <h1>Mis 15</h1>
+    <div class="signature">Karen Dayana Gamboa González</div>
+
+    <p>Con el corazón lleno de amor, te invito a celebrar los quince años de mi querida hija.</p>
+    <p>Acompáñanos a vivir este momento tan especial que quedará por siempre en nuestros corazones.</p>
+
+    <p>📅 15 de mayo</p>
+    <p>⏰ 7:00 PM</p>
+
+    <div id="countdown"></div>
+
+    <button onclick="confirmar(this)">Confirmar asistencia</button>
+
+    <div id="extra" class="hidden">
+      <a href="https://wa.me/573138439272" target="_blank">
+        <button>WhatsApp</button>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- sonidos -->
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mp3">
+</audio>
+
+<audio id="clickSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mp3">
+</audio>
+
+<audio id="openSound">
+  <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mp3">
+</audio>
+
+<script>
+function abrir(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('main').style.display='flex';
+  document.getElementById('music').play();
+  document.getElementById('openSound').play();
+  if(navigator.vibrate) navigator.vibrate(100);
+}
+
+function confirmar(btn){
+  document.getElementById('extra').style.display='block';
+  document.getElementById('clickSound').play();
+  if(navigator.vibrate) navigator.vibrate([100,50,100]);
+
+  // animación botón
+  btn.style.transform='scale(1.1)';
+  setTimeout(()=>{btn.style.transform='scale(1)'},200);
+}
+
+const eventDate=new Date("May 15, 2026 19:00:00").getTime();
+setInterval(()=>{
+  const now=new Date().getTime();
+  const d=eventDate-now;
+  const days=Math.floor(d/(1000*60*60*24));
+  const h=Math.floor((d%(1000*60*60*24))/(1000*60*60));
+  const m=Math.floor((d%(1000*60*60))/(1000*60));
+  document.getElementById('countdown').innerHTML=`⏳ ${days} días ${h}h ${m}m`;
+},1000);
+
+const cantidad=window.innerWidth<480?8:15;
+for(let i=0;i<cantidad;i++){
+  let p=document.createElement('div');
+  p.className='petal';
+  p.style.left=Math.random()*100+'vw';
+  p.style.animationDuration=(6+Math.random()*5)+'s';
+  document.body.appendChild(p);
+}
+</script>
+
+</body>
+</html>
